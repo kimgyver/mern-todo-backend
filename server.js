@@ -43,9 +43,9 @@ todoRoutes.route('/add').post(function(req, res) {
 
 todoRoutes.route('/update/:id').post(function(req, res) {
     Todo.findById(req.params.id, function(err, todo) {
-        if (!todo)
+        if (!todo) {
             res.status(404).send("data is not found");
-        else
+        } else {
             todo.todo_description = req.body.todo_description;
             todo.todo_responsible = req.body.todo_responsible;
             todo.todo_priority = req.body.todo_priority;
@@ -57,6 +57,14 @@ todoRoutes.route('/update/:id').post(function(req, res) {
             .catch(err => {
                 res.status(400).send("Update not possible");
             });
+        }
+    });
+});
+
+todoRoutes.route('/delete/:id').post(function(req, res) {
+    Todo.findByIdAndRemove(req.params.id, function(err, todo) {
+        if (err) { res.json(err); }
+        else res.json('Todo removed!');
     });
 });
 
